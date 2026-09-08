@@ -1,0 +1,43 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "build": {
+      "mode": "primary"
+    },
+    "plan": {
+      "mode": "primary",
+      "permission": {
+        "edit": "deny"
+      }
+    }
+  },
+  "default_agent": "plan",
+  "permission": {
+    "skill": "allow",
+    "question": "allow",
+    "todowrite": "allow"
+  },
+  "skills": {
+    "paths": [
+      ".agents/skills"
+    ]
+  },
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "reserved": 10000
+  },
+  "mcp": {
+    "agent-browser": {
+      "type": "local",
+      "command": [
+        "agent-browser",
+        "mcp",
+        "--tools",
+        "core"
+      ],
+      "enabled": true
+    }
+  },
+  "model": "opencode-go/glm-5.1"
+}

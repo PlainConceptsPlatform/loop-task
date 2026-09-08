@@ -2,11 +2,11 @@
 description: Create an issue in the backlog platform (GitHub, Azure DevOps, Jira) from a description.
 ---
 
-Backlog platform is set in `.opencode/opencode-onboard.json` → `platform.backlog`. The platform-specific content below is injected by the CLI during onboarding.
+Backlog platform is set in `.opencode/harness.json` → `platform.backlog`. The platform-specific content below is injected by the CLI during onboarding.
 
 Input: `$ARGUMENTS` (the issue title/description)
 
-<!-- OB-PLATFORM-BACKLOG-START -->
+<!-- PC-PLATFORM-BACKLOG-START -->
 **ALL GitHub data MUST come from `gh` CLI. NEVER use webfetch, HTTP requests, or browser MCP tools for GitHub operations, even if gh CLI fails. If `gh` is unavailable, report as a blocker.**
 Always pass `--repo {owner}/{repo}` explicitly, never rely on git context to resolve the repo.
 
@@ -37,4 +37,4 @@ Issue created
 Tell the user: "Use `/plan-propose {issue-url}` to turn this into a plan."
 
 ---
-<!-- OB-PLATFORM-BACKLOG-END -->
+<!-- PC-PLATFORM-BACKLOG-END -->

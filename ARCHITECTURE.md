@@ -1,7 +1,7 @@
 # Architecture
 
 > Generated architecture reference for **loop-task** (repo: `loop-task`).
-> Rerun `/ob-create-architecture` whenever the architecture changes significantly.
+> Rerun `/pc-create-architecture` whenever the architecture changes significantly.
 > Last updated: 2026-07-08.
 
 ## Architecture Overview

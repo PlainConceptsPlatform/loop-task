@@ -1,6 +1,10 @@
 node_modules
-.ob-run.json
-opencode-onboard.user.json
+.pc-run.json
+harness.user.json
 source-roots.json
 *-engineer.*.md
 tmp/
+harness-run.json
+harness-managed.json
+agents/build.md
+agents/plan.md

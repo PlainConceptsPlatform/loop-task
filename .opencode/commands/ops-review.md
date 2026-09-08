@@ -2,9 +2,9 @@
 description: Read and triage PR review feedback. Reports what needs fixing, does not implement fixes.
 ---
 
-Repo platform is set in `.opencode/opencode-onboard.json` → `platform.repo`. The platform-specific content below is injected by the CLI during onboarding.
+Repo platform is set in `.opencode/harness.json` → `platform.repo`. The platform-specific content below is injected by the CLI during onboarding.
 
-<!-- OB-PLATFORM-REVIEW-START -->
+<!-- PC-PLATFORM-REVIEW-START -->
 **ALL GitHub data MUST come from `gh` CLI. NEVER use webfetch, HTTP requests, or browser MCP tools for GitHub operations, even if gh CLI fails. If `gh` is unavailable, report as a blocker.**
 Always pass `--repo {owner}/{repo}` explicitly, never rely on git context to resolve the repo.
 
@@ -58,4 +58,4 @@ gh pr comment {pr-number} --body "Updated design.md to reflect feedback."
 ```
 
 ---
-<!-- OB-PLATFORM-REVIEW-END -->
+<!-- PC-PLATFORM-REVIEW-END -->

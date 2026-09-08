@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "generatedAt": "2026-09-08T10:26:17.669Z",
+  "onboardVersion": "1.5.1",
+  "opencodeVersion": "1.18.9",
+  "platform": {
+    "backlog": "github",
+    "repo": "github"
+  },
+  "models": {
+    "plan": "opencode-go/glm-5.2",
+    "build": "opencode-go/glm-5.1",
+    "fast": "opencode/big-pickle"
+  },
+  "agents": {
+    "maxConcurrent": 4
+  },
+  "source": {
+    "mode": "current",
+    "roots": [
+      "C:\\Projects\\Personal\\loop-cli"
+    ]
+  },
+  "tools": {
+    "rtk": true,
+    "quota": true,
+    "codegraph": false,
+    "memory": false,
+    "simpleEnglish": true,
+    "humanizer": true
+  },
+  "preexisting": {
+    "design": true,
+    "architecture": true,
+    "openspec": true
+  },
+  "harnessVersion": "2.4.1"
+}

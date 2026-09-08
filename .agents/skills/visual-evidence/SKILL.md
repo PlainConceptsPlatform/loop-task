@@ -17,7 +17,7 @@ CLI-adapted visual evidence harness for loop-task. Captures CLI stdout/stderr as
 ## When to use
 
 - After implementing a change that touches user-visible CLI output or the TUI board
-- When the `ob-ops-evidence` skill asks you to capture evidence
+- When the `pc-ops-evidence` skill asks you to capture evidence
 - When you need to verify a CLI change works and produce auditable proof
 
 ## Harness location
@@ -57,7 +57,7 @@ After pushing the branch:
 pnpm visual-evidence:publish --change <change-id> --pr 42
 ```
 
-Verifies each asset exists on the remote, then posts/updates an idempotent comment (`<!-- ob-visual-evidence:<id> -->`) on the PR and/or issue.
+Verifies each asset exists on the remote, then posts/updates an idempotent comment (`<!-- pc-visual-evidence:<id> -->`) on the PR and/or issue.
 
 ## How to register a scenario
 

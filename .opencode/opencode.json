@@ -17,7 +17,7 @@
   },
   "permission": {
     "skill": {
-      "ob-*": "allow",
+      "pc-*": "allow",
       "openspec-*": "allow"
     },
     "question": "allow",

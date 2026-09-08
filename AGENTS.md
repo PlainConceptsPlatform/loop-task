@@ -1,6 +1,6 @@
 # AGENTS.md
 
-<!-- OB-NOT-INITIALIZED -->
+<!-- PC-NOT-INITIALIZED -->
 
 This file provides guidance to AI agents when working in this repository.
 
@@ -10,21 +10,21 @@ Agent-agnostic. Works with OpenCode, Claude Code, Codex, Gemini, and others.
 
 Load `DESIGN.md` for design principles and guidelines. Load `ARCHITECTURE.md` for system architecture and component interactions. These files are generated during initialization and updated as the codebase evolves.
 
-Command aliases: OpenSpec skills may reference `/opsx-propose`, `/opsx-apply`, `/opsx-archive`, or `/opsx-explore`. Always substitute them with the `ob-plan-propose`, `ob-plan-apply`, `ob-plan-archive`, `ob-plan-explore` skills respectively (user-facing command names: `/plan-propose`, `/plan-apply`, `/plan-archive`, `/plan-explore`). Never mention the `opsx-` names to the user.
+Command aliases: OpenSpec skills may reference `/opsx-propose`, `/opsx-apply`, `/opsx-archive`, or `/opsx-explore`. Always substitute them with the `pc-plan-propose`, `pc-plan-apply`, `pc-plan-archive`, `pc-plan-explore` skills respectively (user-facing command names: `/plan-propose`, `/plan-apply`, `/plan-archive`, `/plan-explore`). Never mention the `opsx-` names to the user.
 
 ## I am the lead, full workflow ownership
 
-<!-- OB-PLATFORM-WORKFLOW-START -->
-When the user provides a work item URL or says "implement the plan" or "I've added comments to the PR", **I own the full lifecycle**. I load the appropriate userstory skill and coordinate implementation as native subagent waves via the `ob-plan-apply` skill.
+<!-- PC-PLATFORM-WORKFLOW-START -->
+When the user provides a work item URL or says "implement the plan" or "I've added comments to the PR", **I own the full lifecycle**. I load the appropriate userstory skill and coordinate implementation as native subagent waves via the `pc-plan-apply` skill.
 
 Trigger patterns, I recognize ALL of these, exact wording does not matter:
-- User pastes or mentions a GitHub Issue URL → load `ob-userstory` skill → parse issue → load the `ob-plan-propose` skill → confirm with user → load the `ob-plan-apply` skill → ship
-- `implement the plan` / `implement` / `start` / `go` → load the `ob-plan-apply` skill → ship
+- User pastes or mentions a GitHub Issue URL → load `pc-userstory` skill → parse issue → load the `pc-plan-propose` skill → confirm with user → load the `pc-plan-apply` skill → ship
+- `implement the plan` / `implement` / `start` / `go` → load the `pc-plan-apply` skill → ship
 - `I've added comments to the PR` → read PR comments → fix → update PR
 - Any GitHub PR URL in a feedback/fix request (e.g. "check comments", "fix PR feedback") → run PR Feedback Loop
 
 **A GitHub URL in the user's message is a strong trigger: follow the pipeline unless the user explicitly asks for analysis or context only.**
-<!-- OB-PLATFORM-WORKFLOW-END -->
+<!-- PC-PLATFORM-WORKFLOW-END -->
 
 Never delegate without a plan. Default to specialists for implementation. If a subagent wave repeatedly fails, stop forcing it: report, then continue in the main session or ask the user.
 
@@ -32,14 +32,14 @@ Never delegate without a plan. Default to specialists for implementation. If a s
 
 Inspect `.opencode/agents/*.md` before spawning. Prefer the most specialized custom engineer. `fullstack-engineer` is `mode: primary` (the user's planning agent), not a spawned worker. If no specialist matches, tell the user to create one with `/make-engineer`. Spawn only engineers present in that directory.
 
-Full wave protocol, pipeline phases, and concurrency limits: see the `ob-plan-apply` skill (authoritative). Max concurrent agents is `agents.maxConcurrent` in `.opencode/opencode-onboard.json`.
+Full wave protocol, pipeline phases, and concurrency limits: see the `pc-plan-apply` skill (authoritative). Max concurrent agents is `agents.maxConcurrent` in `.opencode/harness.json`.
 
 ## Skills
 
-Skills live in `.agents/skills/`. Always installed: `@ob-guardrails-generic`, `@ob-guardrails-project`, `@browser-automation`. Agents load them via `@skill-name` in their `## Abilities` section.
+Skills live in `.agents/skills/`. Always installed: `@pc-guardrails-generic`, `@pc-guardrails-project`, `@browser-automation`. Agents load them via `@skill-name` in their `## Abilities` section.
 
-<!-- OB-PLATFORM-SKILLS-GUIDE-START -->
+<!-- PC-PLATFORM-SKILLS-GUIDE-START -->
 Platform skills (GitHub):
-- `@ob-userstory`: load when a GitHub Issue URL is detected. Fetches the issue via `gh` CLI and creates an OpenSpec change. NEVER use webfetch to access GitHub URLs.
-- `ob-ops-ship`: load in ship mode to create a PR with screenshots, or in feedback mode to read and classify PR review comments.
-<!-- OB-PLATFORM-SKILLS-GUIDE-END -->
+- `@pc-userstory`: load when a GitHub Issue URL is detected. Fetches the issue via `gh` CLI and creates an OpenSpec change. NEVER use webfetch to access GitHub URLs.
+- `pc-ops-ship`: load in ship mode to create a PR with screenshots, or in feedback mode to read and classify PR review comments.
+<!-- PC-PLATFORM-SKILLS-GUIDE-END -->
