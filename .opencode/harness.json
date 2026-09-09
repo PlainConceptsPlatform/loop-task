@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "generatedAt": "2026-09-08T10:26:17.669Z",
+  "generatedAt": "2026-09-09T12:55:46.600Z",
   "onboardVersion": "1.5.1",
   "opencodeVersion": "1.18.9",
   "platform": {
@@ -34,5 +34,5 @@
     "architecture": true,
     "openspec": true
   },
-  "harnessVersion": "2.4.1"
+  "harnessVersion": "2.5.0"
 }

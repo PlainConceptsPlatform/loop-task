@@ -15,7 +15,7 @@ The caller provides (all optional):
 Repo platform is set in `.opencode/harness.json` `platform.repo`. The platform-specific content below is injected by the CLI during onboarding.
 
 <!-- PC-PLATFORM-SHIP-START -->
-**ALL GitHub data MUST come from `gh` CLI. NEVER use webfetch, HTTP requests, or browser MCP tools for GitHub operations, even if gh CLI fails. If `gh` is unavailable, report as a blocker.**
+GitHub data comes from the `gh` CLI; a page fetch of github.com is denied (pc-system-reminders). If `gh` is unavailable, report it as a blocker.
 Always pass `--repo {owner}/{repo}` explicitly, never rely on git context to resolve the repo.
 
 ---
@@ -28,7 +28,7 @@ DEFAULT_BRANCH="$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null 
 [ -z "$DEFAULT_BRANCH" ] && DEFAULT_BRANCH="main"
 ```
 
-`$BRANCH` must be a work branch (`feature/*` or `bugfix/*`: the `pc-plan-apply` skill creates `feature/{change-slug}`). NEVER push the default branch.
+`$BRANCH` must be a work branch (`feature/*` or `bugfix/*`: the `pc-plan-apply` skill creates `feature/{change-slug}`). Never push the default branch.
 
 ### Step 2: Capture screenshots (if UI changes exist)
 
@@ -42,7 +42,7 @@ Save to: `openspec/changes/{change-name}/images/{feature}.png`
 
 ### Step 3: Commit and push
 
-The `pc-plan-apply` skill already committed each task group: usually only screenshots or small residuals remain. Stage **specific paths only** (never `git add .`, it sweeps unrelated files into the ship commit):
+The `pc-plan-apply` skill already committed each task group: usually only screenshots or small residuals remain. Stage the paths you actually changed; unscoped staging is denied (`pc-system-reminders`):
 
 ```bash
 git add openspec/changes/{change-name}/images/  # plus any other paths you actually changed

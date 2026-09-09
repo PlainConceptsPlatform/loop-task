@@ -9,7 +9,7 @@ When the plan lives in the Todo pane (from `/plan-quick`) and no OpenSpec change
    - Mark it `in_progress` via `todowrite`.
    - Implement it (edit files, run commands as needed).
    - Mark it `completed` via `todowrite`.
-   - Commit the change: `git add <the paths this task wrote> && git commit -m "task {id}: {summary}"`. Never `-A` or `.`: a working tree is shared, and staging all of it commits somebody else's edits, possibly half-finished, under your message.
+   - Commit the change: `git add <the paths this task wrote> && git commit -m "task {id}: {summary}"`. Unscoped staging is denied (`pc-system-reminders`).
 4. After all tasks are done, run the project's typecheck/build check if one exists. Fix any errors.
 5. Report: tasks N/N completed, commits made, branch name.
 
@@ -18,4 +18,4 @@ Rules:
 - No OpenSpec commands.
 - Keep each commit focused on one task.
 - Use `todowrite` to track progress: `pending` -> `in_progress` -> `completed`.
-- If a task is too complex or blocked, mark it `completed` with a note, and continue with the next.
+- Never mark a task `completed` that you did not finish. Use `cancelled` with the reason and continue with the next; a false green is invisible to whoever reads the report.

@@ -15,15 +15,11 @@ Command aliases: OpenSpec skills may reference `/opsx-propose`, `/opsx-apply`, `
 ## I am the lead, full workflow ownership
 
 <!-- PC-PLATFORM-WORKFLOW-START -->
-When the user provides a work item URL or says "implement the plan" or "I've added comments to the PR", **I own the full lifecycle**. I load the appropriate userstory skill and coordinate implementation as native subagent waves via the `pc-plan-apply` skill.
+A GitHub Issue or PR URL in the user's message means run the pipeline, in whatever words it arrives, unless they asked for analysis or context only.
 
-Trigger patterns, I recognize ALL of these, exact wording does not matter:
-- User pastes or mentions a GitHub Issue URL → load `pc-userstory` skill → parse issue → load the `pc-plan-propose` skill → confirm with user → load the `pc-plan-apply` skill → ship
-- `implement the plan` / `implement` / `start` / `go` → load the `pc-plan-apply` skill → ship
-- `I've added comments to the PR` → read PR comments → fix → update PR
-- Any GitHub PR URL in a feedback/fix request (e.g. "check comments", "fix PR feedback") → run PR Feedback Loop
-
-**A GitHub URL in the user's message is a strong trigger: follow the pipeline unless the user explicitly asks for analysis or context only.**
+- Issue URL: `pc-userstory` to parse it, `pc-plan-propose` for the plan, confirm, `pc-plan-apply` to build, then ship.
+- An existing OpenSpec change, plus any of `implement` / `start` / `go`: `pc-plan-apply`, then ship.
+- A PR URL with a feedback or fix request: read the PR comments, fix, update the PR.
 <!-- PC-PLATFORM-WORKFLOW-END -->
 
 Never delegate without a plan. Default to specialists for implementation. If a subagent wave repeatedly fails, stop forcing it: report, then continue in the main session or ask the user.

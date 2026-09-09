@@ -1,6 +1,6 @@
 ---
 name: pc-plan-goal
-description: Autonomous pipeline: explore, propose, apply, archive, then merge/PR/push. For loop-engineering. Invoked by the /plan-goal command.
+description: "Autonomous pipeline: explore, propose, apply, archive, then merge/PR/push. For loop-engineering. Invoked by the /plan-goal command."
 license: MIT
 ---
 
@@ -14,7 +14,7 @@ Move forward only when a phase returns its required result. On a hard failure, f
 
 **Token efficiency rules:** Batch git operations within a phase (combine `git add <paths> && git commit` in one tool call). Do not run status checks between sequential operations in the same phase. Minimize model turns: if a phase requires 3 git commands, call them in one tool call, not 3.
 
-**Stage paths, never `git add -A` or `git add .`.** A working tree is shared: a person or another agent may have edits in it, and staging everything puts their work in your commit under your message. It is not hypothetical. A Teams tool and its tests were committed inside a commit named after a YAML input rename, and nothing in that message said so. Two things go wrong, and the second is worse: the history lies about what changed, and unreviewed or half-finished work reaches the default branch under a heading nobody would look twice at. Saving a model turn is not worth either.
+Stage the paths a phase wrote; unscoped staging is denied (`pc-system-reminders`). A shared tree once put a Teams tool and its tests inside a commit named after a YAML input rename, so unreviewed work reached the default branch under a heading nobody would look twice at.
 
 Input: `$ARGUMENTS`
 
@@ -31,7 +31,9 @@ Load the [output mode](output-mode.md) reference and resolve the mode from the f
 - Preserve title, description, work-item reference, and acceptance criteria as `{resolved_input}`.
 - Derive `{slug}` and classify scope as `focused`, `standard`, or `complex`.
 
-**Refined-issue detection:** After resolving input, check whether `{resolved_input}` already contains structured acceptance criteria (e.g. "## Acceptance criteria", "### Scenario:", Gherkin blocks), affected artifacts, and design decisions. If it does, set `{refined}` to `true` and skip Phases 2-3 (Explore and Propose). Go directly to Phase 4 (Apply). The issue content IS the proposal; create a minimal OpenSpec change (tasks.md only, `skip_specs: true` in `.openspec.yaml`) directly from the issue's acceptance criteria and affected artifacts.
+**Refined-issue detection:** set `{refined}` to `true` only when all three hold. The input came from a backlog work item, not free text. It contains at least one `Scenario:` with `Given` / `When` / `Then`. It names affected paths, and at least one of them exists in this repository. Anything less runs Phases 2 and 3 in full: `{refined}` skips a gate, so a near miss must fall back rather than guess.
+
+When it is `true`, the issue content is the proposal. Phase 2 is skipped and Phase 3 runs with `skip_specs: true`.
 
 ## Phase 1: Branch
 
@@ -47,9 +49,9 @@ Tick `explore` when `pc-plan-explore` returns its findings handoff.
 
 ## Phase 3: Propose
 
-**Skip if `{refined}` is `true`.** Instead, create a minimal OpenSpec change directly: run `openspec new change "{change-id}"`, write `tasks.md` from the issue's acceptance criteria (one task per criterion or artifact group), create `.openspec.yaml` with `skip_specs: true` (the issue already has the spec content), and commit: `git add openspec/changes/{change-id}/ && git commit -m "propose: {title} ({change-id})"`.
-
 Load `pc-plan-propose` in autonomous mode with `{resolved_input}`, `EXPLORATION_BRIEF`, and `scope_classification`.
+
+**When `{refined}` is `true`,** pass the work item as the proposal body and set `skip_specs: true` in `.openspec.yaml`: the issue already carries the spec content. Propose still runs, because it owns task enrichment. A hand-written `tasks.md` has no `<!-- agent, depends_on, touches -->` annotations, and Phase 4 stops on a task whose worker is unresolved.
 
 Confirm its change directory and actionable `tasks.md` exist. Rename `$BRANCH` when the canonical change slug differs from `{slug}`, then commit the proposal:
 

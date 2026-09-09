@@ -15,7 +15,7 @@ The caller provides (all optional):
 ## Modes
 
 - `interactive` (default): report progress to the user and surface failures for their decision.
-- `autonomous`: do not return control between waves; keep looping until every task is DONE or the progress guard / retry limit trips. On a stall or exhausted retry, stop the wave loop and report to the caller (whose failure policy governs). When all tasks are DONE, the APPLY stage is complete. Hand control back to the caller (the `/plan-goal` pipeline) so it continues with the next phase. Do not end the turn here; "report N/N tasks" is a stage boundary, not a finish line.
+- `autonomous`: there is no user to return to between waves. Loop until every task is DONE, or until the progress guard or the retry limit trips, then report to the caller, whose failure policy governs. APPLY completes by handing control back to `/plan-goal`, which has four phases left to run: `N/N tasks` is this stage's boundary, not the pipeline's.
 
 ## Plan source detection
 
@@ -25,9 +25,17 @@ The caller provides (all optional):
 
 ## OpenSpec mode: parallel subagent waves
 
-Load `@openspec-apply-change` skill and follow its instructions, replacing Step 6 (Implement) with the protocol below.
+Load `@openspec-apply-change` for change selection, status, and closing. Its
+own implement step does not apply here: annotated tasks are implemented only by
+spawning the annotated tier worker, and the lead never implements. Take that
+step from the protocol below instead.
 
-**Step 6: Implement via native subagent waves. Replace the default step 6 with this protocol.**
+Referring to it by number would break silently. `@openspec-apply-change` is
+installed by `openspec init --force` with no version pinned, so an inserted step
+upstream renumbers the one being replaced, and the sequential default would then
+run alongside these waves.
+
+**Implement via native subagent waves.**
 
 You are the lead. You orchestrate from this session only; you spawn workers with the native `task` tool. Workers are ephemeral (one batch, then they exit) and navigable (`ctrl+x` arrow down, left/right arrows). There is no board, no claiming, no merging, no external dashboard.
 
@@ -35,7 +43,7 @@ Core rule: push, don't pull. A worker is born with its work: every `task()` spaw
 
 **1. Branch.** Create `feature/{change-slug}` if not already on one. (Skip this step when the caller passed `start_from: load-plan`.)
 
-**2. Load the plan and workers.** Parse `tasks.md`. Each task carries `<!-- agent, depends_on, touches -->` (from `pc-plan-propose`). Inspect `.opencode/agents/` for each base engineer and its generated `.<tier>.md` variants. The tier-suffixed name in an annotation (for example, `backend-engineer.build`) is the worker to spawn: `pc-subagent-tiers` resolves its model at startup and registers it as `mode: subagent`. Read `.opencode/harness.json` -> `agents.maxConcurrent` (the wave cap, 1 to 5).
+**2. Load the plan and workers.** Parse `tasks.md`. Each task carries `<!-- agent, depends_on, touches -->` (from `pc-plan-propose`). Inspect `.opencode/agents/` for each base engineer and its generated `.<tier>.md` variants. The tier-suffixed name in an annotation (for example, `backend-engineer.build`) is the worker to spawn: `pc-subagent-tiers` resolves its model at startup and registers it as `mode: subagent`. Read `.opencode/harness.json` -> `agents.maxConcurrent` (the wave cap, 1 to 5, enforced by `pc-subagent-monitor`).
 
 Before hydrating the Todo board, resolve every task's annotated worker. If any task has a blank agent annotation, its base template is missing, or its tier variant is unavailable, stop the APPLY stage and report the task ID, expected worker, and missing file. Do not replace the worker with `fullstack-engineer`, `general`, or the lead session.
 
@@ -60,7 +68,8 @@ if eligible is empty but tasks remain  -> STALL: report blocked tasks + the fail
 groups   = pack eligible tasks that share a file (touches and gathered context)
             into ONE worker each, to run sequentially (the worker uses the task's `agent`)
 wave     = pick groups whose file-sets are pairwise DISJOINT, capped at maxConcurrentAgents
-            (you enforce the cap: opencode runs every task() you emit at once)
+            (opencode runs every task() you emit at once; a spawn past the cap
+             is denied, and a denied spawn is not a failed group: re-issue it)
 ```
 
 **6. Context per group.** For each group, gather the task text, relevant plan decisions, and source context needed to implement it.

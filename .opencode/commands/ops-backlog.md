@@ -7,7 +7,7 @@ Backlog platform is set in `.opencode/harness.json` → `platform.backlog`. The 
 Input: `$ARGUMENTS` (the issue title/description)
 
 <!-- PC-PLATFORM-BACKLOG-START -->
-**ALL GitHub data MUST come from `gh` CLI. NEVER use webfetch, HTTP requests, or browser MCP tools for GitHub operations, even if gh CLI fails. If `gh` is unavailable, report as a blocker.**
+GitHub data comes from the `gh` CLI; a page fetch of github.com is denied (pc-system-reminders). If `gh` is unavailable, report it as a blocker.
 Always pass `--repo {owner}/{repo}` explicitly, never rely on git context to resolve the repo.
 
 ---
