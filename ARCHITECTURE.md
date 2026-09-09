@@ -709,3 +709,5 @@ All shell commands must be prefixed with `rtk` in agent contexts (see AGENTS.md)
 | Recipe file | A JSON file in v2 export format containing one loop + its tasks. Placed in `{project.dir}/.loops/recipes/`. Logical task IDs are remapped to 8-char hex at load time. |
 | RecipeTaskStore | In-memory `Map<taskId, TaskDefinition>` for recipe tasks. Never persisted to `tasks.json`. Loaded and unloaded with recipe file lifecycle. |
 | Deferred reload | When a recipe file changes while its loop is running, the reload is deferred until the loop stops, then applied automatically. |
+
+<!-- Last updated: 2026-09-08T12:26:42Z -->

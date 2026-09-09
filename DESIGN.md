@@ -303,3 +303,5 @@ Loop status is communicated via color:
 - **No CSS animations** - Terminal rendering. The only motion is `ink-spinner`.
 - **Terminal-width dependent** - Responsive breakpoints: wide (`>=110` columns) uses side-by-side panels; compact (`70-109`) stacks full-width navigator and inspector panels; minimal (`<70`) shows only the full-width navigator.
 - **Color compatibility** - Uses 24-bit ANSI true color. Falls back gracefully on terminals without true color support via Ink's color handling.
+
+<!-- Last updated: 2026-07-28T19:24:54Z -->
